@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Métodos de Localização de Raiz</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.1.0/math.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab|Open+Sans|Montserrat"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Root Finding Methods</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/11.1.0/math.min.js"></script>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab|Open+Sans|Montserrat">
-</head>
-
-<body class="center" style="background-color: #b7e6ed;">
-  <div id="div-main"
-    style="display: flex; align-items: center; justify-content: center; box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);">
-    <div style="display: flex; flex-direction: column; justify-content: center; max-width: 900px;">
-      <h1>Métodos de Localização de Raiz</h1>
-      <div>
-        <!--<label for="font-select">Escolha uma fonte:</label>
+  <body class="center" style="background-color: #b7e6ed">
+    <div
+      id="div-main"
+      style="
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      "
+    >
+      <div
+        style="
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          max-width: 900px;
+        "
+      >
+        <h1>Métodos de Localização de Raiz</h1>
+        <div>
+          <!--<label for="font-select">Escolha uma fonte:</label>
         <select id="font-select">
           <option value="Arial, sans-serif">Arial</option>
           <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
@@ -30,88 +46,129 @@
           <option value="'Open Sans', sans-serif">Open Sans</option>
           <option value="'Montserrat', sans-serif">Montserrat</option>
         </select>-->
-      </div>
-      <div class="center">
-        <label style="color: #3b3b3b; font-weight: bold;" for="function-input">Insira uma função f(x): </label>
-        <input class="input" type="text" id="function-input" placeholder="e.g., 2*x + 3*cos(x) - e^x">
-        <button class="function-buttons" onclick="plotFunction()">Plotar função</button>
-        <button class="function-buttons" onclick="useDefaultFunction()">Usar função padrão</button>
-        <button class="function-buttons" onclick="useRandomFunction()">Usar função random</button>
-      </div>
-
-      <div>
-        <div class="center" style="margin-top: 1.5rem;">
-          <label for="method-select" style="color: #3b3b3b; font-weight: bold;">Selecione um método:</label>
-          <select id="method-select">
-            <option value="bisection">Método da Bisecção</option>
-            <option value="false_pos">Método da falsa posição</option>
-            <option value="newton">Método de Newton</option>
-            <option value="secant">Método da Secante</option>
-          </select>
         </div>
-        <table class="center">
-          <tbody>
+        <div class="center">
+          <label style="color: #3b3b3b; font-weight: bold" for="function-input"
+            >Insira uma função f(x):
+          </label>
+          <input
+            class="input"
+            type="text"
+            id="function-input"
+            placeholder="e.g., 2*x + 3*cos(x) - e^x"
+          />
+          <button class="function-buttons" onclick="plotFunction()">
+            Plotar função
+          </button>
+          <button class="function-buttons" onclick="useDefaultFunction()">
+            Usar função padrão
+          </button>
+          <button class="function-buttons" onclick="useRandomFunction()">
+            Usar função random
+          </button>
+        </div>
+
+        <div>
+          <div class="center" style="margin-top: 1.5rem">
+            <label for="method-select" style="color: #3b3b3b; font-weight: bold"
+              >Selecione um método:</label
+            >
+            <select id="method-select">
+              <option value="bisection">Método da Bisecção</option>
+              <option value="false_pos">Método da falsa posição</option>
+              <option value="newton">Método de Newton</option>
+              <option value="secant">Método da Secante</option>
+            </select>
+          </div>
+          <table class="center">
+            <tbody>
+              <tr>
+                <td style="text-align: right">
+                  <label
+                    for="range-a"
+                    style="width: 70px; color: #3b3b3b; font-weight: bold"
+                    >(Início do intervalo) a:</label
+                  >
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="input animated-input"
+                    id="range-a"
+                    value="2"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td style="text-align: right">
+                  <label
+                    for="range-b"
+                    style="width: 70px; color: #3b3b3b; font-weight: bold"
+                    >(Final do intervalo) b:</label
+                  >
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="input animated-input"
+                    id="range-b"
+                    value="3"
+                  />
+                </td>
+              </tr>
+              <tr>
+                <td
+                  style="text-align: right; color: #3b3b3b; font-weight: bold"
+                >
+                  <label for="epsilon" style="width: 70px"
+                    >(Erro) epsilon:</label
+                  >
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="input animated-input"
+                    id="epsilon"
+                    value="0.001"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="center" style="margin-top: 1rem">
+            <button onclick="solveMethod()" class="button-solve">
+              Resolver
+            </button>
+          </div>
+        </div>
+
+        <div class="center" style="margin-top: 10px" id="graph"></div>
+
+        <div id="result" style="margin-left: 10px">
+          <h2 style="color: #3f3f3f">Resultado</h2>
+          <p id="solution"></p>
+          <p id="iterations"></p>
+        </div>
+
+        <table id="result-table">
+          <thead>
             <tr>
-              <td style="text-align: right;">
-                <label for="range-a" style="width: 70px; color: #3b3b3b; font-weight: bold;">(Início do intervalo)
-                  a:</label>
-              </td>
-              <td>
-                <input type="number" class="input animated-input" id="range-a" value="2">
-              </td>
+              <th>Iteração</th>
+              <th>a</th>
+              <th>b</th>
+              <th>x</th>
+              <th>f(a)</th>
+              <th>f(b)</th>
+              <th>f(x)</th>
+              <th>|b - a|</th>
             </tr>
-            <tr>
-              <td style="text-align: right;">
-                <label for="range-b" style="width: 70px; color: #3b3b3b; font-weight: bold;">(Final do intervalo)
-                  b:</label>
-              </td>
-              <td>
-                <input type="number" class="input animated-input" id="range-b" value="3">
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: right; color: #3b3b3b; font-weight: bold;">
-                <label for="epsilon" style="width: 70px;">(Erro) epsilon:</label>
-              </td>
-              <td>
-                <input type="number" class="input animated-input" id="epsilon" value="0.001">
-              </td>
-            </tr>
-          </tbody>
+          </thead>
+          <tbody></tbody>
         </table>
-
-        <div class="center" style="margin-top: 1rem;">
-          <button onclick="solveMethod()" class="button-solve">Resolver</button>
-        </div>
       </div>
-
-      <div class="center" style="margin-top: 10px;" id="graph"></div>
-
-      <div id="result" style="margin-left: 10px">
-        <h2 style="color: #3f3f3f">Resultado</h2>
-        <p id="solution"></p>
-        <p id="iterations"></p>
-      </div>
-
-      <table id="result-table">
-        <thead>
-          <tr>
-            <th>Iteração</th>
-            <th>a</th>
-            <th>b</th>
-            <th>x</th>
-            <th>f(a)</th>
-            <th>f(b)</th>
-            <th>f(x)</th>
-            <th>|b - a|</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
     </div>
-  </div>
 
-  <script src="script.js"></script>
-</body>
-
+    <script src="script.js"></script>
+  </body>
 </html>
